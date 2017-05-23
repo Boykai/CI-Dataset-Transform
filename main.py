@@ -10,11 +10,11 @@ import pandas as pd
 class Process(object):
     def __init__(self, dataframe):
         '''
+        Initializes Pandas DataFrame, saves all parameters as attributes of the 
+        instance. 
+        
         Represents the processing of the csv input files, converted into a 
         Pandas DataFrame.
-    
-        Initializes Pandas DataFrame, saves all parameters as attributes of the 
-        instance.     
 
         dataframe: To initalize Process 'df' attribute (a Pandas DataFrame 
                    object).
@@ -37,9 +37,9 @@ class Process(object):
         
     def set_df(self, dataframe):
         '''
-        dataframe: To set Process 'df' attribute (a Pandas DataFrame object).
-        
         Sets the Process attribute for 'df' (a Pandas DataFrame object).
+        
+        dataframe: To set Process 'df' attribute (a Pandas DataFrame object).
         '''
         self.df = dataframe
         
@@ -51,9 +51,9 @@ class Process(object):
         
     def set_age(self, age_value):
         '''
-        age_value: An age range for the 'device_name' (a string)
-        
         Appends 'age_value' to Process 'age' attribute.
+        
+        age_value: An age range for the 'device_name' (a string)
         '''
         self.age.append(age_value)
         
@@ -65,9 +65,9 @@ class Process(object):
         
     def set_cluster(self, cluster_value):
         '''
-        cluster_value: A cluster for the 'device_name' (a string)
-        
         Appends 'cluster_value' to Process 'cluster' attribute.
+        
+        cluster_value: A cluster for the 'device_name' (a string)
         '''
         self.cluster.append(cluster_value)
         
@@ -79,13 +79,59 @@ class Process(object):
         
     def set_device(self, device_value):
         '''
-        device_value: A device for the 'device_name' (a string)
-        
         Appends 'device_value' to Process 'device' attribute.
+        
+        device_value: A device for the 'device_name' (a string)
         '''
         self.device.append(device_value)
+        
+    def split_full_campaign_name(self, campaign_name_value):
+        '''
+        Converts an intance of 'campaign_name' feature into age, cluster, device
+        and appends the values to their respective class attribute list.
+        
+        campaign_name_value: contains the age, cluster, device, and possibly 
+                             date information for each 'campaign_name' 
+                             (a string).
+        '''
+        expected_ages = ['<21',
+                         '21-30',
+                         '31-40',
+                         '41-50',
+                         '51+']
+        expected_clusters = ['notarget',
+                             'cluster1',
+                             'cluster2',
+                             'cluster3',
+                             'allclusters']
+        
+        split_string = campaign_name_value.split('_')
+                             
+        for i in range(len(split_string)):
+            if split_string[i] in expected_ages:
+                # If string is an 'expected_age' append to age attribute
+                # then replace with '' in 'split_string' list
+                self.set_age(split_string[i])
+                split_string[i] = ''
+            elif split_string[i].lower() in expected_clusters:
+                # If string is a cluster append to cluster attribute 
+                # then replace with '' in 'split_string' list
+                self.set_cluster(split_string[i])
+                split_string[i] = ''
+            elif unicode(split_string[i], 'utf-8').isnumeric():
+                # If string is a date 
+                # then replace with '' in 'split_string' list
+                split_string[i] = ''
+            else:
+                # Format strings to lower case for 'device' string
+                split_string[i] = split_string[i].lower()
+        
+        # Remove empty string values from list
+        device_name = filter(None, split_string)
+        
+        self.set_device('_'.join(device_name))
 
-class PrcoessInput1(Process):
+class ProcessInput1(Process):
     '''
     Child of Process() Class.
     
@@ -110,10 +156,21 @@ class PrcoessInput1(Process):
     Assumptions:
         The campaign data is from, 'date', is not needed or used.
     '''
+    
     def __init__(self, dataframe):
-        super().__init__(dataframe)
-
+        '''
+        Initializes Pandas DataFrame, saves all parameters as attributes of the 
+        instance, within the Process() parent class.
         
+        Represents the processing of the first csv input files, converted into a 
+        Pandas DataFrame.
+
+        dataframe: To initalize Process 'df' attribute (a Pandas DataFrame 
+                   object).
+        '''
+        super().__init__(dataframe)
+            
+
 
         
 
