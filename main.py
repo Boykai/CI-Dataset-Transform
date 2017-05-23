@@ -130,6 +130,30 @@ class Process(object):
         device_name = filter(None, split_string)
         
         self.set_device('_'.join(device_name))
+        
+    def create_new_df(self):
+        '''
+        Creates new Pandas DataFrame by applying a function on the 
+        'campaign_name' column values. From the 'campaign_name' new columns age,
+        cluster, device are added to the original Pandas DataFrame. 'key' column
+        is also added, which is a tuple of (age, cluster, device).
+        
+        @Returns: Column appended 'df' (a Pandas DataFrame object).
+        '''
+        df = self.get_df()
+        
+        df['campaign_name'].apply(self.split_full_campaign_name)
+        
+        age = self.get_age()
+        cluster = self.get_cluster()
+        device = self.get_device()
+        
+        df['key'] = zip(age, cluster, device)
+        df['age'] = age
+        df['cluster'] = cluster
+        df['device'] = device
+        
+        return df
 
 class ProcessInput1(Process):
     '''
@@ -168,8 +192,9 @@ class ProcessInput1(Process):
         dataframe: To initalize Process 'df' attribute (a Pandas DataFrame 
                    object).
         '''
-        super().__init__(dataframe)
-            
+        super(ProcessInput1, self).__init__(dataframe)
+        
+    
 
 
         
@@ -191,8 +216,10 @@ if __name__ == '__main__':
         
     Exports 1 table per tab in XLSX file.
     '''
-    df1 = pd.read_csv('CI_Analyst_-_input1.csv')
-    df2 = pd.read_csv('CI_Analyst_-_input2.csv')
+    df_input1 = pd.read_csv('CI_Analyst_-_input1.csv')
+    df_input2 = pd.read_csv('CI_Analyst_-_input2.csv')
+    
+    
     
     
     
