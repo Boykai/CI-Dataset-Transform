@@ -219,6 +219,11 @@ if __name__ == '__main__':
     df_input1 = pd.read_csv('CI_Analyst_-_input1.csv')
     df_input2 = pd.read_csv('CI_Analyst_-_input2.csv')
     
+    df1_obj = Process(df_input1)
+    df_output1 = df1_obj.create_new_df()
+    
+    df2_obj = Process(df_input2)
+    df_output2 = df2_obj.create_new_df()
     
     
     
