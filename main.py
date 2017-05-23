@@ -8,7 +8,7 @@ Created on Tue May 23 15:51:13 2017
 import pandas as pd
 
 class Process(object):
-    def __init__(self, df):
+    def __init__(self, dataframe):
         '''
         Represents the processing of the csv input files, converted into a 
         Pandas DataFrame.
@@ -16,12 +16,15 @@ class Process(object):
         Initializes Pandas DataFrame, saves all parameters as attributes of the 
         instance.     
 
+        dataframe: To initalize Process 'df' attribute (a Pandas DataFrame 
+                   object).
+        
         df: Keeps track of the dataframe (a Pandas DataFrame object).
         age: The age category of the device_name (a list of strings).
         cluster: The cluster category of the device_name (a list of strings).
         device: The device category of the device_name (a list of strings).
         '''
-        self.df = df
+        self.df = dataframe
         self.age = []
         self.cluster = []
         self.device = []
@@ -81,9 +84,38 @@ class Process(object):
         Appends 'device_value' to Process 'device' attribute.
         '''
         self.device.append(device_value)
-        
-        
+
+class PrcoessInput1(Process):
+    '''
+    Child of Process() Class.
     
+    Represents the processing of the first csv input file, 
+    'CI_Analyst_-_input1' converted into a Pandas DataFrame.
+
+    ProcessInput1 takes in a Pandas DataFrame object, created from the given
+    input file 'CI_Analyst_-_input1.csv'. This class allows for the Pandas 
+    Dataframe to be mutated to include the following features:
+        
+        key: Created from 'campain_name' feature. Seperating 'age', 'cluster',
+             'device' into a tuple. (a tuple) 
+             Ex. ('31-40', 'notarget', 'htc_one_1GB')
+        age: The age category of the device_name (a string).
+        cluster: The cluster category of the device_name (a string).
+        device: The device category of the device_name (a list of strings).
+        spend: Definition of feature not given. (a float)
+        impressions: Definition of feature not given. (an integer)
+        clicks: Definiton of feature not given. (an integer)
+        count: Number of distinct campaign names from per row (an integer)          
+    
+    Assumptions:
+        The campaign data is from, 'date', is not needed or used.
+    '''
+    def __init__(self, dataframe):
+        super().__init__(dataframe)
+
+        
+
+        
 
 if __name__ == '__main__':
     '''
