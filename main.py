@@ -5,7 +5,9 @@ Created on Tue May 23 15:51:13 2017
 @author: Boykai
 """
 
+import numpy as np
 import pandas as pd
+from ast import literal_eval
 
 class Process(object):
     def __init__(self, dataframe):
@@ -59,7 +61,7 @@ class Process(object):
         
     def get_cluster(self):
         '''
-        @Returns: Process attribute for cluster (a list of strings).
+        @Returns: Process attribute for 'cluster' (a list of strings).
         '''
         return self.cluster
         
@@ -73,7 +75,7 @@ class Process(object):
         
     def get_device(self):
         '''
-        @Returns: Process attribute for device (a list of strings).
+        @Returns: Process attribute for 'device' (a list of strings).
         '''
         return self.device
         
@@ -225,12 +227,46 @@ class ProcessInput2(Process):
 
         dataframe: To initalize Process 'df' attribute (a Pandas DataFrame 
                    object).
+        storied_engagements: The sum of like, comment, and share 'action_types'
+                             for each given sample. (an list of integers).
+        video_views: The sum of 'video_view' for a given sample. (a list of 
+                     integers).
         '''
-        super(ProcessInput2, self).__init__(dataframe)    
-
-
+        super(ProcessInput2, self).__init__(dataframe)
+        self.storied_engagements = []
+        self.video_view = []
+    
+    def get_storied_engagements(self):
+        '''
+        @Returns: ProcessInput2 attribute for 'storied_engagements' (a list 
+                  integers).
+        '''
+        return self.storied_engagements
         
-
+    def set_storied_engagements(self, storied_engagements_value):
+        '''
+        Appends 'storied_engagements' to ProcessInput2 'storied_engagements'
+        attribute.
+        
+        storied_Engagements_value: A value for the 'storied_engagements_value' 
+                                  (an integer)
+        '''
+        self.storied_engagements.append(storied_engagements_value)
+        
+    def get_video_view(self):
+        '''
+        @Returns: ProcessInput2 attribute for 'video_view' (a list of strings).
+        '''
+        return self.video_view
+        
+    def set_video_view(self, video_view_value):
+        '''
+        Appends 'video_view_value' to ProcessInput2 'video_view' attribute.
+        
+        video_view_value: The sum of video view action types. (an integer)
+        '''
+        self.video_view.append(video_view_value)
+            
 if __name__ == '__main__':
     '''
     Reads in multiple .csv files, stores them as Pandas DataFrame object.
@@ -250,9 +286,6 @@ if __name__ == '__main__':
     '''
     df_input1 = pd.read_csv('CI_Analyst_-_input1.csv')
     df_input2 = pd.read_csv('CI_Analyst_-_input2.csv')
-    
-    
-    
     
     
     
