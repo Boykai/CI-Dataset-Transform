@@ -353,3 +353,9 @@ if __name__ == '__main__':
     # Create new instance of ProcessInput2, get new df with appended columns
     df2_obj = ProcessInput2(df2_input)
     df2_processed = df2_obj.create_new_df()
+    
+    # Create 'count' series to concat into df1 groupedby 'key'
+    # 'count' = count of unquie keys, for each group of keys
+    s_count = df1_processed.groupby(['key']).size().rename('count')
+    df1_groupby_key = df1_processed.groupby(['key']).sum()
+    df1_output = pd.concat((df1_groupby_key, s_count), axis=1, join='inner')
