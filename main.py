@@ -368,3 +368,30 @@ if __name__ == '__main__':
                                (df_output['video_views'] > 0))\
                         .fillna(0)\
                         .round(decimals = 2)
+    
+    # Create table groups, groupby key, age, cluster, device
+    # Calculate sum of each group
+    # Append totals row to end of DataFrame
+    df_groupby_key = df_output.groupby('key')\
+                              .sum()\
+                              .append(df_groupby_key\
+                                      .sum(numeric_only=True),\
+                                           ignore_index=True)
+                              
+    df_groupby_age = df_output.groupby('age')\
+                              .sum()\
+                              .append(df_groupby_age\
+                                      .sum(numeric_only=True),\
+                                           ignore_index=True)
+    
+    df_groupby_cluster = df_output.groupby('cluster')\
+                                  .sum()\
+                                  .append(df_groupby_cluster\
+                                          .sum(numeric_only=True),\
+                                               ignore_index=True)
+                                  
+    df_groupby_device = df_output.groupby('device')\
+                                 .sum()\
+                                 .append(df_groupby_device\
+                                         .sum(numeric_only=True),\
+                                              ignore_index=True)
