@@ -131,15 +131,12 @@ class Process(object):
         device_name = filter(None, split_string)
         
         self.set_device('_'.join(device_name))
-        
-    def create_new_df(self):
+    
+    def create_keys(self):
         '''
-        Creates new Pandas DataFrame by applying a function on the 
-        'campaign_name' column values. From the 'campaign_name' new columns age,
-        cluster, device are added to the original Pandas DataFrame. 'key' column
-        is also added, which is a tuple of (age, cluster, device).
-        
-        @Returns: Column appended 'df' (a Pandas DataFrame object).
+        Creates list of keys from the 'campaign_name' feature. Adds 'key' column
+        to 'df' attribute. A 'key' is a tuple of (age, cluster, device) derived
+        from the 'campaign_name' column of the 'df'.
         '''
         df = self.get_df()
         
@@ -150,11 +147,8 @@ class Process(object):
         device = self.get_device()
         
         df['key'] = zip(age, cluster, device)
-        df['age'] = age
-        df['cluster'] = cluster
-        df['device'] = device
-        
-        return df
+
+        self.set_df(df)
 
 class ProcessInput1(Process):
     '''
@@ -304,7 +298,6 @@ if __name__ == '__main__':
     df_input1 = pd.read_csv('CI_Analyst_-_input1.csv')
     df_input2 = pd.read_csv('CI_Analyst_-_input2.csv', 
                             converters={'actions':literal_eval})
-
     
     
     
