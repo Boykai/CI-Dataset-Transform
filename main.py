@@ -189,7 +189,6 @@ class ProcessInput1(Process):
         '''
         super(ProcessInput1, self).__init__(dataframe)
     
-            
     def create_new_df(self):
         '''
         Creates new Pandas DataFrame by applying a processing functions on the
@@ -342,6 +341,15 @@ if __name__ == '__main__':
         
     Exports 1 table per tab in XLSX file.
     '''
-    df_input1 = pd.read_csv('CI_Analyst_-_input1.csv')
-    df_input2 = pd.read_csv('CI_Analyst_-_input2.csv', 
+    # Read in .csv files to their respective Pandas DataFrame
+    df1_input = pd.read_csv('CI_Analyst_-_input1.csv')
+    df2_input = pd.read_csv('CI_Analyst_-_input2.csv', 
                             converters={'actions':literal_eval})
+    
+    # Create new instance of ProcessInput1, get new df with appended columns
+    df1_obj = ProcessInput1(df1_input)
+    df1_processed = df1_obj.create_new_df()
+    
+    # Create new instance of ProcessInput2, get new df with appended columns
+    df2_obj = ProcessInput2(df2_input)
+    df2_processed = df2_obj.create_new_df()
