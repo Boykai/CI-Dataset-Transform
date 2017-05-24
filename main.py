@@ -348,19 +348,20 @@ if __name__ == '__main__':
     
     # Create new instance of ProcessInput1, get new df with appended columns
     df1_obj = ProcessInput1(df1_input)
-    df1_processed = df1_obj.create_new_df()
+    df1_processed = df1_obj.create_new_df()\
+                           .drop_duplicates(subset='key')
     
     # Create new instance of ProcessInput2, get new df with appended columns
     df2_obj = ProcessInput2(df2_input)
-    df2_processed = df2_obj.create_new_df()
+    df2_processed = df2_obj.create_new_df()\
+                           .drop_duplicates(subset='key')
     
     # Create 'count' column
     # 'count' = count of unquie keys, for each group of keys
     df1_processed['count'] = 1
-
+    
     # Merge df1 and df2 by 'key'
     df_output = df1_processed.merge(df2_processed, on='key', how='inner')
-   
     # Calculate 'CPPV' as 'spend'/'video_views', if 'object_type' is 'VIDEO',
     # otherwise set 'CPPV' = 0
     df_output['CPPV'] = (df_output['spend']/df_output['video_views'])\
