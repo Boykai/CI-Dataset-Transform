@@ -354,13 +354,17 @@ if __name__ == '__main__':
     df2_obj = ProcessInput2(df2_input)
     df2_processed = df2_obj.create_new_df()
     
-    # Create 'count' series to concat into df1 groupedby 'key'
+    # Create 'count' column
     # 'count' = count of unquie keys, for each group of keys
-    s_count = df1_processed.groupby(['key']).size().rename('count')
-    df1_groupby_key = df1_processed.groupby(['key']).sum()
-    df1_output = pd.concat((df1_groupby_key, s_count), axis=1, join='inner')
-    
-    # Mask non 'VIDEO' 'object_type's to 0 keep value for 'VIDEO' 'object_type'
-    df2_processed['video_views'] = (df2_processed['object_type'] == 'VIDEO')\
-                                    .astype(bool)\
-                                    * df2_processed['video_views']
+    df1_processed['count'] = 1
+
+    # Merge df1 and df2 by 'key'
+    df_output = df1_processed.merge(df2_processed, on='key', how='inner')
+   
+    # Calculate 'CPPV' as 'spend'/'video_views', if 'object_type' is 'VIDEO',
+    # otherwise set 'CPPV' = 0
+    df_output['CPPV'] = (df_output['spend']/df_output['video_views'])\
+                        .where((df_output['object_type'] == 'VIDEO') &\
+                               (df_output['video_views'] > 0))\
+                        .fillna(0)\
+                        .round(decimals = 2)
