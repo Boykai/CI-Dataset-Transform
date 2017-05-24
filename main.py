@@ -188,7 +188,27 @@ class ProcessInput1(Process):
                    object).
         '''
         super(ProcessInput1, self).__init__(dataframe)
+    
+            
+    def create_new_df(self):
+        '''
+        Creates new Pandas DataFrame by applying a processing functions on the
+        original 'df'. Then appends features to the 'df' to create new processed
+        'df'.
         
+        @Returns: Column appended 'df' (a Pandas DataFrame object).
+        '''
+        self.create_keys()
+        
+        df = self.get_df()
+        df['age'] = self.get_age()
+        df['cluster'] = self.get_cluster()
+        df['device'] = self.get_device()
+        
+        self.set_df(df)
+        
+        return self.get_df()
+    
 class ProcessInput2(Process):
     '''
     Child of Process() Class.
@@ -278,6 +298,25 @@ class ProcessInput2(Process):
         self.set_storied_engagements(storied_engagement)
         self.set_video_view(video_views)
         
+    def create_new_df(self):
+        '''
+        Creates new Pandas DataFrame by applying a processing functions on the
+        original 'df'. Then appends features to the 'df' to create new processed
+        'df'.
+        
+        @Returns: Column appended 'df' (a Pandas DataFrame object).
+        '''        
+        self.create_keys()
+
+        df = self.get_df()
+        df['actions'].apply(self.process_actions)
+        df['storied_engagements'] = self.get_storied_engagements()
+        df['view_views'] = self.get_video_view()
+        
+        self.set_df(df)
+
+        return self.get_df()
+        
 if __name__ == '__main__':
     '''
     Reads in multiple .csv files, stores them as Pandas DataFrame object.
@@ -298,8 +337,3 @@ if __name__ == '__main__':
     df_input1 = pd.read_csv('CI_Analyst_-_input1.csv')
     df_input2 = pd.read_csv('CI_Analyst_-_input2.csv', 
                             converters={'actions':literal_eval})
-    
-    
-    
-    
-    
