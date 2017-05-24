@@ -4,7 +4,7 @@ Created on Tue May 23 15:51:13 2017
 
 @author: Boykai
 """
-
+import numpy as np
 import pandas as pd
 from ast import literal_eval
 
@@ -318,7 +318,7 @@ class ProcessInput2(Process):
         df = self.get_df()
         df['actions'].apply(self.process_actions)
         df['storied_engagements'] = self.get_storied_engagements()
-        df['view_views'] = self.get_video_view()
+        df['video_views'] = self.get_video_view()
         
         self.set_df(df)
 
@@ -359,3 +359,8 @@ if __name__ == '__main__':
     s_count = df1_processed.groupby(['key']).size().rename('count')
     df1_groupby_key = df1_processed.groupby(['key']).sum()
     df1_output = pd.concat((df1_groupby_key, s_count), axis=1, join='inner')
+    
+    # Mask non 'VIDEO' 'object_type's to 0 keep value for 'VIDEO' 'object_type'
+    df2_processed['video_views'] = (df2_processed['object_type'] == 'VIDEO')\
+                                    .astype(bool)\
+                                    * df2_processed['video_views']
