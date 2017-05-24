@@ -194,7 +194,39 @@ class ProcessInput1(Process):
         '''
         super(ProcessInput1, self).__init__(dataframe)
         
+class ProcessInput2(Process):
+    '''
+    Child of Process() Class.
     
+    Represents the processing of the first csv input file, 
+    'CI_Analyst_-_input1' converted into a Pandas DataFrame.
+
+    ProcessInput2 takes in a Pandas DataFrame object, created from the given
+    input file 'CI_Analyst_-_input2.csv'. This class allows for the Pandas 
+    Dataframe to be mutated to include the following features:
+        
+        key: Created from 'campain_name' feature. Seperating 'age', 'cluster',
+             'device' into a tuple. (a tuple) 
+             Ex. ('31-40', 'notarget', 'htc_one_1GB')
+        age: The age category of the device_name (a string).
+        cluster: The cluster category of the device_name (a string).
+        device: The device category of the device_name (a list of strings).
+        actions: List of dicts with {'action_type':value'. (a list of dicts)
+        object_type: Definition of feature not given. (a string)
+    '''
+    
+    def __init__(self, dataframe):
+        '''
+        Initializes Pandas DataFrame, saves all parameters as attributes of the 
+        instance, within the Process() parent class.
+        
+        Represents the processing of the first csv input files, converted into a 
+        Pandas DataFrame.
+
+        dataframe: To initalize Process 'df' attribute (a Pandas DataFrame 
+                   object).
+        '''
+        super(ProcessInput2, self).__init__(dataframe)    
 
 
         
@@ -219,11 +251,8 @@ if __name__ == '__main__':
     df_input1 = pd.read_csv('CI_Analyst_-_input1.csv')
     df_input2 = pd.read_csv('CI_Analyst_-_input2.csv')
     
-    df1_obj = Process(df_input1)
-    df_output1 = df1_obj.create_new_df()
     
-    df2_obj = Process(df_input2)
-    df_output2 = df2_obj.create_new_df()
+    
     
     
     
