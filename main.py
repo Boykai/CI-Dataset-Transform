@@ -5,7 +5,6 @@ Created on Tue May 23 15:51:13 2017
 @author: Boykai
 """
 
-import numpy as np
 import pandas as pd
 from ast import literal_eval
 
@@ -266,7 +265,25 @@ class ProcessInput2(Process):
         video_view_value: The sum of video view action types. (an integer)
         '''
         self.video_view.append(video_view_value)
-            
+    
+    def process_actions(self, action_value):
+        video_views = 0
+        storied_engagement = 0
+        valid_storied_engagements = ['like',
+                                     'comment',
+                                     'share']
+        
+        for item in action_value:
+            if item['action_type'] in valid_storied_engagements:
+                storied_engagement += item['value']
+            elif item['action_type'] == 'video_view':
+                video_views += item['value']
+            else:
+                pass
+        
+        self.set_storied_engagements(storied_engagement)
+        self.set_video_view(video_views)
+        
 if __name__ == '__main__':
     '''
     Reads in multiple .csv files, stores them as Pandas DataFrame object.
@@ -285,7 +302,10 @@ if __name__ == '__main__':
     Exports 1 table per tab in XLSX file.
     '''
     df_input1 = pd.read_csv('CI_Analyst_-_input1.csv')
-    df_input2 = pd.read_csv('CI_Analyst_-_input2.csv')
+    df_input2 = pd.read_csv('CI_Analyst_-_input2.csv', 
+                            converters={'actions':literal_eval})
+
+    
     
     
     
