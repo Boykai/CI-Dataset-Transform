@@ -281,6 +281,14 @@ class ProcessInput2(Process):
         self.video_view.append(video_view_value)
     
     def process_actions(self, action_value):
+        '''
+        Processes 'action_type' dictionaries from 'df' feature 'action_type'.
+        Stores 'storied_engagement' and 'video_view' values to their respective
+        ProcessInput2 class attributes.
+        
+        action_value: A list of dictionaries with {action_type:values}. (a list
+                      of dictionaries)
+        '''
         video_views = 0
         storied_engagement = 0
         valid_storied_engagements = ['like',
