@@ -385,9 +385,12 @@ if __name__ == '__main__':
     df_groupby_device.loc['Totals'] = df_groupby_device.sum()
     
     # Output groupby Pandas DataFrames to different sheets in same .xlsx
+    # Keeps only the desired columns for each sheet
+    keep_columns = ['spend', 'impressions', 'CPPV', 'count']
+    
     writer = pd.ExcelWriter('output.xlsx')
-    df_groupby_key.to_excel(writer, 'Sheet1')
-    df_groupby_age.to_excel(writer, 'Sheet2')
-    df_groupby_cluster.to_excel(writer, 'Sheet3')
-    df_groupby_device.to_excel(writer, 'Sheet4')
+    df_groupby_key[keep_columns].to_excel(writer, 'Sheet1')
+    df_groupby_age[keep_columns].to_excel(writer, 'Sheet2')
+    df_groupby_cluster[keep_columns].to_excel(writer, 'Sheet3')
+    df_groupby_device[keep_columns].to_excel(writer, 'Sheet4')
     writer.save()
