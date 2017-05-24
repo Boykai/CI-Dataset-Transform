@@ -371,27 +371,23 @@ if __name__ == '__main__':
     
     # Create table groups, groupby key, age, cluster, device
     # Calculate sum of each group
-    # Append totals row to end of DataFrame
-    df_groupby_key = df_output.groupby('key')\
-                              .sum()\
-                              .append(df_groupby_key\
-                                      .sum(numeric_only=True),\
-                                           ignore_index=True)
+    # Append 'Totals' row to end of DataFrame
+    df_groupby_key = df_output.groupby('key').sum()
+    df_groupby_key.loc['Totals'] = df_groupby_key.sum()
                               
-    df_groupby_age = df_output.groupby('age')\
-                              .sum()\
-                              .append(df_groupby_age\
-                                      .sum(numeric_only=True),\
-                                           ignore_index=True)
+    df_groupby_age = df_output.groupby('age').sum()
+    df_groupby_age.loc['Totals'] = df_groupby_age.sum()
     
-    df_groupby_cluster = df_output.groupby('cluster')\
-                                  .sum()\
-                                  .append(df_groupby_cluster\
-                                          .sum(numeric_only=True),\
-                                               ignore_index=True)
+    df_groupby_cluster = df_output.groupby('cluster').sum()
+    df_groupby_cluster.loc['Totals'] = df_groupby_cluster.sum()
                                   
-    df_groupby_device = df_output.groupby('device')\
-                                 .sum()\
-                                 .append(df_groupby_device\
-                                         .sum(numeric_only=True),\
-                                              ignore_index=True)
+    df_groupby_device = df_output.groupby('device').sum()
+    df_groupby_device.loc['Totals'] = df_groupby_device.sum()
+    
+    # Output groupby Pandas DataFrames to different sheets in same .xlsx
+    writer = pd.ExcelWriter('output.xlsx')
+    df_groupby_key.to_excel(writer, 'Sheet1')
+    df_groupby_age.to_excel(writer, 'Sheet2')
+    df_groupby_cluster.to_excel(writer, 'Sheet3')
+    df_groupby_device.to_excel(writer, 'Sheet4')
+    writer.save()
