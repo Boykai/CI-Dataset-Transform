@@ -5,8 +5,6 @@ Created on Wed May 24 17:42:36 2017
 @author: Boykai
 """
 
-import pandas as pd
-
 class Process(object):
     def __init__(self, dataframe):
         '''
