@@ -33,17 +33,26 @@ if __name__ == '__main__':
     
     # Create new instance of ProcessInput1, get new df with appended columns
     df1_obj = process.ProcessInput1(df1_input)
-    df1_processed = df1_obj.create_new_df()\
-                           .drop_duplicates(subset='key')
+    df1_processed = df1_obj.create_new_df()
     
     # Create new instance of ProcessInput2, get new df with appended columns
     df2_obj = process.ProcessInput2(df2_input)
-    df2_processed = df2_obj.create_new_df()\
-                           .drop_duplicates(subset='key')
+    df2_processed = df2_obj.create_new_df()
     
     # Create 'count' column
     # 'count' = count of unquie keys, for each group of keys
-    df1_processed['count'] = 1
+    unique_device_names = []
+    unique_device_count = []
+    
+    # Store count as 1 for unique device, otherwise store 0
+    for device in df1_processed['key']:
+        if device not in unique_device_names:
+            unique_device_names.append(device)
+            unique_device_count.append(1)
+        else:
+            unique_device_count.append(0)
+        
+    df1_processed['count'] = unique_device_count
     
     # Merge df1 and df2 by 'key'
     df_output = df1_processed.merge(df2_processed, on='key', how='inner')
