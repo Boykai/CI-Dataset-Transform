@@ -45,14 +45,7 @@ if __name__ == '__main__':
     unique_device_count = []
     
     # Store count as 1 for unique device, otherwise store 0
-    for device in df1_processed['key']:
-        if device not in unique_device_names:
-            unique_device_names.append(device)
-            unique_device_count.append(1)
-        else:
-            unique_device_count.append(0)
-        
-    df1_processed['count'] = unique_device_count
+    df1_processed['count'] = 1
     
     # Merge df1 and df2 by 'key'
     df_output = df1_processed.merge(df2_processed, on='key', how='inner')
